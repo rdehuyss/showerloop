@@ -1,0 +1,43 @@
+{
+  "wifi": {
+    "ssid": "WiFi-2.4-62A1",
+    "password": "internetisvaniedereen"
+  },
+  "mqtt": {
+    "serverName": "test.mosquitto.org",
+    "clientName": "showerloop"
+  },
+  "hotWaterFlowSensor": {
+    "flowPin": 13,
+    "temperatureSensorPin": 36
+  },
+  "coldWaterFlowSensor": {
+    "flowPin": 12,
+    "temperatureSensorPin": 39
+  },
+  "drainValve": {
+    "openPin": 27,
+    "closePin": 14
+  },
+  "coldWaterSupplyValve": {
+    "openPin": 25,
+    "closePin": 26
+  },
+  "recuperationWaterSupplyValve": {
+    "openPin": 21,
+    "closePin": 22
+  },
+  "waterLevelSensor": {
+    "lowPin": 16,
+    "highPin": 17
+  },
+  "waterPump": {
+    "pin": 15
+  },
+  "uvcLamp": {
+    "pin": 2
+  },
+  "byPassButton": {
+    "pin": 18
+  }
+}
