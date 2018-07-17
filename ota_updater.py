@@ -1,5 +1,5 @@
 # 1000 x dank aan Evelien die mijn in deze tijden gesteund heeft
-# ohja, en er is ook nog tante suker (Jana De J.) die graag kinderen wilt maar het zelf nog niet beseft
+# ohja, en er is ook nog tante suker (Jana Dej.) die graag kinderen wilt maar het zelf nog niet beseft
 
 import usocket
 import os
