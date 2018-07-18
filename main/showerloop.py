@@ -1,4 +1,5 @@
 import utime
+import os
 
 from .water_level_sensor import WaterLevelSensor
 from .water_level_controller import WaterLevelController
@@ -7,6 +8,7 @@ from .ntc_temperature_sensor import NtcTemperatureSensor
 from .valve import Valve
 from .relay import Relay
 from .mqttclient import MQTTPublisher
+from ..ota_update.main.ota_updater import OTAUpdater
 
 
 class ShowerLoop:
@@ -34,6 +36,8 @@ class ShowerLoop:
         self.showerloopStats = ShowerLoopStats()
         self.mqttPublisher = MQTTPublisher(config_data)
 
+        print('Showerloop ', self.get_version('main'), 'up & running')
+
     def cold_water_running_callback(self, flow_rate):
         self.cold_water_flow_rate = flow_rate
         self.start_fsm()
@@ -52,12 +56,12 @@ class ShowerLoop:
                     self.start_showerloop()
                 else:
                     print("Waiting for water temp", self.hot_water_flow_rate.temperature)
-        #else:
-                #    if self.showerloopState.is_started():
-                #self.stop_showerloop()
-                #print("Flow Rate:")
-                #print("    Hot water flow: ", self.total_hot_water_flow_rate)
-        #print("    Recuperation water flow: ", self.total_recuperation_water_flow_rate)
+        # else:
+        #    if self.showerloopState.is_started():
+        # self.stop_showerloop()
+        # print("Flow Rate:")
+        # print("    Hot water flow: ", self.total_hot_water_flow_rate)
+        # print("    Recuperation water flow: ", self.total_recuperation_water_flow_rate)
 
         if self.showerloopState.is_started():
             self.showerloopStats.add_hot_water_flow(self.hot_water_flow_rate)
@@ -90,6 +94,20 @@ class ShowerLoop:
             self.drainValve.open()
             self.recuperationWaterSupplyValve.close()
             self.showerloopState.stopped()
+        # After each shower check for updates as we already have a WIFI connection
+        o = OTAUpdater('https://github.com/rdehuyss/showerloop')
+        o.download_updates_if_available()
+
+        # Start over for next shower and disable wifi
+        os.reset()
+
+    def get_version(self, directory):
+        if '.version' in os.listdir(directory):
+            f = open(directory + '/.version')
+            version = f.read()
+            f.close()
+            return version
+        return '0.0'
 
 
 class ShowerLoopStatus:
@@ -128,7 +146,6 @@ class ShowerLoopStats:
         self.stop_time = -1
         self.running = False
 
-
         self.hot_water_pulses = 0
         self.hot_water_total_millilitres = 0
         self.hot_water_avg_temp = 0
@@ -165,11 +182,13 @@ class ShowerLoopStats:
         self.recuperation_water_total_millilitres += flow_rate.millilitres
         self.recuperation_water_avg_temp = flow_rate.temperature if self.recuperation_water_avg_temp < 1 else (self.recuperation_water_avg_temp + flow_rate.temperature) / 2
 
-
     def __str__(self):
-        return "\n\tHot water: " + str(self._calculate_L_per_min(self.hot_water_total_millilitres)) + " L/min; " + str(self.hot_water_total_millilitres) + " ml; " + str(self.hot_water_pulses) + " pulses; " + str(self.hot_water_avg_temp) + " C" \
-               "\n\tCold water: " + str(self._calculate_L_per_min(self.cold_water_total_millilitres)) + " L/min; " + str(self.cold_water_total_millilitres) + " ml; " + str(self.cold_water_pulses) + " pulses; " + str(self.cold_water_avg_temp) + " C" \
-               "\n\tRecuperation water: " + str(self._calculate_L_per_min(self.recuperation_water_total_millilitres)) + " L/min; " + str(self.recuperation_water_total_millilitres) + " ml; " + str(self.recuperation_water_pulses) + " pulses; " + str(self.recuperation_water_avg_temp) + " C"
+        return "\n\tHot water: " + str(self._calculate_L_per_min(self.hot_water_total_millilitres)) + " L/min; " + str(self.hot_water_total_millilitres) + " ml; " + str(self.hot_water_pulses) + " pulses; " + str(
+            self.hot_water_avg_temp) + " C" \
+                                       "\n\tCold water: " + str(self._calculate_L_per_min(self.cold_water_total_millilitres)) + " L/min; " + str(self.cold_water_total_millilitres) + " ml; " + str(self.cold_water_pulses) + " pulses; " + str(
+            self.cold_water_avg_temp) + " C" \
+                                        "\n\tRecuperation water: " + str(self._calculate_L_per_min(self.recuperation_water_total_millilitres)) + " L/min; " + str(self.recuperation_water_total_millilitres) + " ml; " + str(
+            self.recuperation_water_pulses) + " pulses; " + str(self.recuperation_water_avg_temp) + " C"
 
     def _calculate_L_per_min(self, millilitres):
         return (millilitres / 1000) / ((self.stop_time - self.start_time) / (1000 * 60))

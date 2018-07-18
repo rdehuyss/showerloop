@@ -1,4 +1,5 @@
 import ujson
+import utime
 from ota_update.main.ota_updater import OTAUpdater
 
 
@@ -8,6 +9,7 @@ def apply_updates_if_available(config_data):
 
 
 def start(config_data):
+    utime.sleep_ms(30000)
     from main.showerloop import ShowerLoop
     ShowerLoop(config_data)
 
