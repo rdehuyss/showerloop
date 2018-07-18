@@ -7,17 +7,21 @@ import os
 
 class OTAUpdater:
 
-    def __init__(self):
+    def __init__(self, github_repo='https://github.com/rdehuyss/showerloop/', main_dir='main'):
+        self.http_client = HttpClient()
+        self.github_repo = github_repo.replace('https://github.com', 'https://api.github.com/repos')
+        self.main_dir = main_dir
+
+    def using_network(self, ssid='WiFi-2.4-62A1', password='internetisvaniedereen'):
         import network
         sta_if = network.WLAN(network.STA_IF)
         if not sta_if.isconnected():
             print('connecting to network...')
             sta_if.active(True)
-            sta_if.connect('WiFi-2.4-62A1', 'internetisvaniedereen')
+            sta_if.connect(ssid, password)
             while not sta_if.isconnected():
                 pass
         print('network config:', sta_if.ifconfig())
-        self.http_client = HttpClient()
 
     def apply_pending_updates_if_available(self):
         if 'next' in os.listdir():
@@ -35,10 +39,13 @@ class OTAUpdater:
         if latest_version > current_version:
             print('Updating...')
             os.mkdir('next')
-            self.download_all_files('https://api.github.com/repos/rdehuyss/showerloop/contents/main', latest_version)
-            with open('next/showerloop.version', 'w') as versionfile:
+            self.download_all_files(self.github_repo + '/contents/' + self.main_dir, latest_version)
+            with open('next/.version', 'w') as versionfile:
                 versionfile.write(latest_version)
                 versionfile.close()
+
+            return True
+        return False
             
 
     def rmtree(self, top):
@@ -52,13 +59,13 @@ class OTAUpdater:
         os.rmdir(top)
 
     def get_version(self, directory):
-        f = open(directory + '/showerloop.version')
+        f = open(directory + '/.version')
         version = f.read()
         f.close()
         return version
 
     def get_latest_version(self):
-        latest_release = self.http_client.get('https://api.github.com/repos/rdehuyss/showerloop/releases/latest')
+        latest_release = self.http_client.get(self.github_repo + '/releases/latest')
         version = latest_release.json()['tag_name']
         latest_release.close()
         return version
@@ -163,7 +170,7 @@ class HttpClient:
             # add user agent
             s.write('User-Agent')
             s.write(b': ')
-            s.write('ShowerLoop')
+            s.write('MicroPython OTAUpdater')
             s.write(b'\r\n')
             if json is not None:
                 assert data is None
