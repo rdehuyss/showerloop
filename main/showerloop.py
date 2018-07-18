@@ -1,5 +1,6 @@
 import utime
 import os
+import machine
 
 from .water_level_sensor import WaterLevelSensor
 from .water_level_controller import WaterLevelController
@@ -8,7 +9,7 @@ from .ntc_temperature_sensor import NtcTemperatureSensor
 from .valve import Valve
 from .relay import Relay
 from .mqttclient import MQTTPublisher
-from ..ota_update.main.ota_updater import OTAUpdater
+from ota_update.main.ota_updater import OTAUpdater
 
 
 class ShowerLoop:
@@ -56,12 +57,9 @@ class ShowerLoop:
                     self.start_showerloop()
                 else:
                     print("Waiting for water temp", self.hot_water_flow_rate.temperature)
-        # else:
-        #    if self.showerloopState.is_started():
-        # self.stop_showerloop()
-        # print("Flow Rate:")
-        # print("    Hot water flow: ", self.total_hot_water_flow_rate)
-        # print("    Recuperation water flow: ", self.total_recuperation_water_flow_rate)
+        else:
+            if self.showerloopState.is_started():
+                self.stop_showerloop()
 
         if self.showerloopState.is_started():
             self.showerloopStats.add_hot_water_flow(self.hot_water_flow_rate)
@@ -70,13 +68,13 @@ class ShowerLoop:
             self.showerloopStats.add_hot_water_flow(self.hot_water_flow_rate)
             self.showerloopStats.add_cold_water_flow(self.cold_water_flow_rate)
 
-        print("Showerloop stats", self.showerloopStats)
+        self.mqttPublisher.publish(self.showerloopStats)
 
     def start_showerloop(self):
+        self.mqttPublisher.connect()
         self.showerloopStats.start()
         self.showerloopState.starting()
         self.drainValve.close()
-        self.mqttPublisher.publish(self.showerloopStats)
 
     def start_pumping(self):
         if self.showerloopState.is_starting():
@@ -94,12 +92,14 @@ class ShowerLoop:
             self.drainValve.open()
             self.recuperationWaterSupplyValve.close()
             self.showerloopState.stopped()
-        # After each shower check for updates as we already have a WIFI connection
-        o = OTAUpdater('https://github.com/rdehuyss/showerloop')
-        o.download_updates_if_available()
+            self.mqttPublisher.disconnect()
 
-        # Start over for next shower and disable wifi
-        os.reset()
+            # After each shower check for updates as we already have a WIFI connection
+            o = OTAUpdater('https://github.com/rdehuyss/showerloop')
+            o.download_updates_if_available()
+
+            # Start over for next shower and disable wifi
+            machine.reset()
 
     def get_version(self, directory):
         if '.version' in os.listdir(directory):
