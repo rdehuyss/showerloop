@@ -1,5 +1,4 @@
 import utime
-import ujson
 
 from .water_level_sensor import WaterLevelSensor
 from .water_level_controller import WaterLevelController
@@ -7,15 +6,13 @@ from .water_flow_sensor import WaterFlowSensor, FlowInfo
 from .ntc_temperature_sensor import NtcTemperatureSensor
 from .valve import Valve
 from .relay import Relay
+from .mqttclient import MQTTPublisher
 
 
 class ShowerLoop:
 
-    def __init__(self):
+    def __init__(self, config_data):
         self.showerloopState = ShowerLoopStatus()
-
-        f = open('config.json')
-        config_data = ujson.load(f)
 
         cold_water_temperature_sensor = NtcTemperatureSensor(config_data["coldWaterFlowSensor"]["temperatureSensorPin"])
         self.coldWaterFlowSensor = WaterFlowSensor(config_data["coldWaterFlowSensor"]["flowPin"], self.cold_water_running_callback, cold_water_temperature_sensor)
@@ -35,6 +32,7 @@ class ShowerLoop:
         self.cold_water_flow_rate = FlowInfo.stopped()
 
         self.showerloopStats = ShowerLoopStats()
+        self.mqttPublisher = MQTTPublisher(config_data)
 
     def cold_water_running_callback(self, flow_rate):
         self.cold_water_flow_rate = flow_rate
@@ -74,6 +72,7 @@ class ShowerLoop:
         self.showerloopStats.start()
         self.showerloopState.starting()
         self.drainValve.close()
+        self.mqttPublisher.publish(self.showerloopStats)
 
     def start_pumping(self):
         if self.showerloopState.is_starting():
@@ -127,6 +126,7 @@ class ShowerLoopStats:
     def __init__(self):
         self.start_time = -1
         self.stop_time = -1
+        self.running = False
 
 
         self.hot_water_pulses = 0
@@ -143,14 +143,17 @@ class ShowerLoopStats:
 
     def start(self):
         self.start_time = utime.ticks_ms()
+        self.running = True
 
     def stop(self):
         self.stop_time = utime.ticks_ms()
+        self.running = False
 
     def add_hot_water_flow(self, flow_rate: FlowInfo):
         self.hot_water_pulses += flow_rate.pulses
         self.hot_water_total_millilitres += flow_rate.millilitres
         self.hot_water_avg_temp = flow_rate.temperature if self.hot_water_avg_temp < 1 else (self.hot_water_avg_temp + flow_rate.temperature) / 2
+        self.stop_time = utime.ticks_ms()  # we update the stop time so we can send it via mqtt
 
     def add_cold_water_flow(self, flow_rate: FlowInfo):
         self.cold_water_pulses += flow_rate.pulses
@@ -161,6 +164,7 @@ class ShowerLoopStats:
         self.recuperation_water_pulses += flow_rate.pulses
         self.recuperation_water_total_millilitres += flow_rate.millilitres
         self.recuperation_water_avg_temp = flow_rate.temperature if self.recuperation_water_avg_temp < 1 else (self.recuperation_water_avg_temp + flow_rate.temperature) / 2
+
 
     def __str__(self):
         return "\n\tHot water: " + str(self._calculate_L_per_min(self.hot_water_total_millilitres)) + " L/min; " + str(self.hot_water_total_millilitres) + " ml; " + str(self.hot_water_pulses) + " pulses; " + str(self.hot_water_avg_temp) + " C" \

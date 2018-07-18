@@ -1,14 +1,20 @@
-import utime
-import script
+import ujson
+from ota_update.main.ota_updater import OTAUpdater
 
+
+def apply_updates_if_available(config_data):
+    o = OTAUpdater('https://github.com/rdehuyss/showerloop')
+    o.apply_pending_updates_if_available()
+
+
+def start(config_data):
+    from main.showerloop import ShowerLoop
+    ShowerLoop(config_data)
 
 
 def main():
+    f = open('config.json')
+    config_data = ujson.load(f)
 
-    valve = Valve(5, 6)
-    while True:
-        print('Opening')
-        valve.open()
-        utime.sleep_ms(5000)
-        print('Closing')
-        valve.close()
+    apply_updates_if_available(config_data)
+    start(config_data)

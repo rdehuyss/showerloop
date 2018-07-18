@@ -1,11 +1,12 @@
 {
   "wifi": {
-    "ssid": "WiFi-2.4-62A1",
-    "password": "internetisvaniedereen"
+    "ssid": "your ssid",
+    "password": "your password"
   },
   "mqtt": {
-    "serverName": "test.mosquitto.org",
-    "clientName": "showerloop"
+    "host": "test.mosquitto.org",
+    "clientName": "showerloop",
+    "topic": "rdehuyss/test"
   },
   "hotWaterFlowSensor": {
     "flowPin": 13,

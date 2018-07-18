@@ -1,3 +1,5 @@
 .idea
 venv
-showerloop.version
+ota_update
+.version
+config.json
