@@ -1,6 +1,5 @@
 import ujson
 import utime
-from ntptime import NTPProvider
 from ota_update.main.ota_updater import OTAUpdater
 
 
@@ -16,8 +15,6 @@ def start(config_data):
 
 
 def test():
-    NTPProvider.set_machine_time()
-
     f = open('config.json')
     config_data = ujson.load(f)
 
