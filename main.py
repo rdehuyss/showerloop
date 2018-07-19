@@ -14,10 +14,12 @@ def start(config_data):
     ShowerLoop(config_data)
 
 
-def test():
+def boot_showerloop():
     f = open('config.json')
     config_data = ujson.load(f)
 
     download_and_install_update_if_available(config_data)
     start(config_data)
 
+
+boot_showerloop()
