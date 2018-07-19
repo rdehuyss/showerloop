@@ -13,21 +13,23 @@ class Valve:
         self.timer = machine.Timer(Valve.Counter)
         self.valve_counter = Valve.Counter
 
-        self._currentRelay = None
         self.time_to_open = time_to_open
         self.state = default_state
+        self._currentRelay = None
+        self._callback = None
 
         print("Initialized Valve ", self.valve_counter, " on pins ", open_pin, " (open) and ", close_pin, " (close)")
 
-    def open(self):
-        self.move(1.0)
+    def open(self, callback = None):
+        self.move(1.0, callback)
 
-    def close(self):
-        self.move(0.0)
+    def close(self, callback = None):
+        self.move(0.0, callback)
 
-    def move(self, new_state):
+    def move(self, new_state, callback = None):
         if self._currentRelay is not None:
             raise Exception("ERROR: can't control valve if already moving")  # is this the case? Otherwise stop all control and timers and then do magic?
+        self._callback = callback
 
         action = ""
         if new_state > self.state:
@@ -49,6 +51,9 @@ class Valve:
         self.timer.deinit()
         self._currentRelay = None
         print("Valve ", self.valve_counter, " moved to state", self.state)
+        if self._callback:
+            self._callback(self.valve_counter, self.state)
+            self._callback = None
 
     def _calculate_time_needed(self, new_state):
         start_stop_time = self.time_to_open / 10

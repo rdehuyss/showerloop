@@ -5,6 +5,7 @@ from .water_level_sensor import WaterLevelSensor
 class WaterLevelController:
 
     def __init__(self, valve: Valve, low_water_level_sensor: WaterLevelSensor, high_water_level_sensor: WaterLevelSensor):
+        self.is_controlling = True
         self.valve = valve
         self.low_water_level_sensor = low_water_level_sensor
         self.low_water_level_sensor.add_low_callback(self.low_water_level_sensor_low_callback)
@@ -15,10 +16,16 @@ class WaterLevelController:
         print("Initialized WaterLevelController")
 
     def low_water_level_sensor_low_callback(self, pin):
-        self.valve.close()
+        if self.is_controlling:
+            self.valve.close()
 
     def high_water_level_sensor_low_callback(self, pin):
-        self.valve.move(0.15)
+        if self.is_controlling:
+            self.valve.move(0.15)
 
     def high_water_level_sensor_high_callback(self, pin):
-        self.valve.move(0.25)
+        if self.is_controlling:
+            self.valve.move(0.25)
+
+    def stop_controlling(self):
+        self.is_controlling = False

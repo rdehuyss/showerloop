@@ -37,6 +37,8 @@ class ShowerLoop:
         self.showerloopStats = ShowerLoopStats()
         self.mqttPublisher = MQTTPublisher(config_data)
 
+        self.valves_ready_counter = 0
+
         print('Showerloop ', self.get_version('main'), 'up & running')
 
     def cold_water_running_callback(self, flow_rate):
@@ -89,11 +91,17 @@ class ShowerLoop:
         if self.showerloopState.is_started():
             self.waterPumpRelay.off()
             self.uvcLampRelay.off()
-            self.drainValve.open()
-            self.recuperationWaterSupplyValve.close()
+            self.waterLevelController.stop_controlling()
+            self.drainValve.open(self.reset_on_all_valves_close)
+            self.coldWaterSupplyValve.open(self.reset_on_all_valves_close)
+            self.recuperationWaterSupplyValve.close(self.reset_on_all_valves_close)
+
             self.showerloopState.stopped()
             self.mqttPublisher.disconnect()
 
+    def reset_on_all_valves_close(self, valve, state):
+        self.valves_ready_counter += 1
+        if self.valves_ready_counter >= 3:
             # After each shower check for updates as we already have a WIFI connection
             o = OTAUpdater('https://github.com/rdehuyss/showerloop')
             o.check_for_update_to_install_during_next_reboot()
