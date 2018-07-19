@@ -96,7 +96,7 @@ class ShowerLoop:
 
             # After each shower check for updates as we already have a WIFI connection
             o = OTAUpdater('https://github.com/rdehuyss/showerloop')
-            o.download_updates_if_available()
+            o.check_for_update_to_install_during_next_reboot()
 
             # Start over for next shower and disable wifi
             machine.reset()
