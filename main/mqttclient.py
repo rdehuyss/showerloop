@@ -12,23 +12,25 @@ class MQTTPublisher:
         self.old_time = -1
 
     def connect(self):
-        import network
-        sta_if = network.WLAN(network.STA_IF)
-        if not sta_if.isconnected():
-            print('connecting to network...')
-            sta_if.active(True)
-            sta_if.connect(self.config_data['wifi']['ssid'], self.config_data['wifi']['password'])
-            while not sta_if.isconnected():
-                pass
-        print('network config:', sta_if.ifconfig())
-        self.client = MQTTClient(self.config_data['mqtt']['clientName'], self.config_data['mqtt']['host'])
-        self.client.connect()
-        self.connected = True
+        if 'wifi' in self.config_data:
+            import network
+            sta_if = network.WLAN(network.STA_IF)
+            if not sta_if.isconnected():
+                print('connecting to network...')
+                sta_if.active(True)
+                sta_if.connect(self.config_data['wifi']['ssid'], self.config_data['wifi']['password'])
+                while not sta_if.isconnected():
+                    pass
+            print('network config:', sta_if.ifconfig())
+            self.client = MQTTClient(self.config_data['mqtt']['clientName'], self.config_data['mqtt']['host'])
+            self.client.connect()
+            self.connected = True
 
 
     def disconnect(self):
-        self.client.disconnect()
-        self.connected = False
+        if self.connected:
+            self.client.disconnect()
+            self.connected = False
 
     def publish(self, msg):
         if self.connected and utime.ticks_ms() - self.old_time > 60000:

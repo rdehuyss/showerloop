@@ -17,7 +17,7 @@ class WaterFlowSensor:
 
         self.timer = machine.Timer(WaterFlowSensor.Counter)
         self.timer_started = False
-        self.pin = machine.Pin(pin, machine.Pin.IN, machine.Pin.PULL_UP)
+        self.pin = machine.Pin(pin, machine.Pin.IN, machine.Pin.PULL_DOWN)
         self.pin.irq(trigger=machine.Pin.IRQ_FALLING, handler=self.flow_callback)
 
         # why comment: one cannot instantiate in ISR => instantiate it in constructor
@@ -26,7 +26,7 @@ class WaterFlowSensor:
         self.flow_sensor_callback = callback
         self.ntc_temperature_sensor = ntc_temperature_sensor
 
-        print("Initialized FlowSensor", (WaterFlowSensor.Counter - 10))
+        print("Initialized FlowSensor", (WaterFlowSensor.Counter - 10), "on pin", pin)
 
     def timer_callback(self, b):
         micropython.schedule(self.calculate_flow_rate_ref, 0)
@@ -49,11 +49,15 @@ class WaterFlowSensor:
             self.flow_info = FlowInfo(flow_status, flow_rate, millilitres, pulses, temperature)
             if self.flow_sensor_callback:
                 self.flow_sensor_callback(self.flow_info)
+            else:
+                print(self.flow_info)
         else:
             if self.flow_info.flowing == FlowStatus.RUNNING:
                 self.flow_info = FlowInfo(FlowStatus.STOPPED, flow_rate, millilitres, pulses, temperature)
                 if self.flow_sensor_callback:
                     self.flow_sensor_callback(self.flow_info)
+                else:
+                    print(self.flow_info)
             else:
                 self.flow_info = FlowInfo.stopped()
                 self.timer.deinit()
