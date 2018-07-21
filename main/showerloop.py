@@ -35,7 +35,10 @@ class ShowerLoop:
         self.cold_water_flow_rate = FlowInfo.stopped()
 
         self.showerloopStats = ShowerLoopStats()
-        self.mqttPublisher = MQTTPublisher(config_data)
+        if 'wifi' in config_data:
+            self.mqttPublisher = MQTTPublisher(config_data)
+        else:
+            self.mqttPublisher = None
 
         self.valves_ready_counter = 0
 
@@ -102,9 +105,10 @@ class ShowerLoop:
     def reset_on_all_valves_close(self, valve, state):
         self.valves_ready_counter += 1
         if self.valves_ready_counter >= 3:
-            # After each shower check for updates as we already have a WIFI connection
-            o = OTAUpdater('https://github.com/rdehuyss/showerloop')
-            o.check_for_update_to_install_during_next_reboot()
+            if self.mqttPublisher:
+                # After each shower check for updates as we already have a WIFI connection
+                o = OTAUpdater('https://github.com/rdehuyss/showerloop')
+                o.check_for_update_to_install_during_next_reboot()
 
             # Start over for next shower and disable wifi
             machine.reset()

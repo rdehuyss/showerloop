@@ -17,7 +17,7 @@ class WaterFlowSensor:
 
         self.timer = machine.Timer(WaterFlowSensor.Counter)
         self.timer_started = False
-        self.pin = machine.Pin(pin, machine.Pin.IN)
+        self.pin = machine.Pin(pin, machine.Pin.IN, machine.Pin.PULL_UP)
         self.pin.irq(trigger=machine.Pin.IRQ_FALLING, handler=self.flow_callback)
 
         # why comment: one cannot instantiate in ISR => instantiate it in constructor
