@@ -31,6 +31,10 @@ This is the source code repository for showerloop NG, an updated version of [sho
 ##Video showing the shower prototype
 [Here is a video showing a working prototype of showerloop](https://lh3.googleusercontent.com/RiQwsrnvpodZIGrsXgYXlvrhQmIinLnbh-OmgbJ6Kly4MkZ-bXnuI9YJNUxAbHXJ9iAuCArBEZaFzNuW3NdeOmrP6EqaUUFchiInSAtR1N4IVFcJKaVCW6QOi1JR51bOhtPEBZcEYgI)
 
+##Some photos
+![showerloop](https://lh3.googleusercontent.com/mCpf1CWx0O3JYL5fCNP8VG_fqOPlzdEwxGoAnU9qe89ydDBDHQU880Zj3NKRJVqFh9m7ZACjnhmMf5BI5zehphfSUeETSV8WXOC5-VWgqkNqywUXN2e-1g3DBTFK6yG80X30ymrv8Jc=w2400 "Logo Title Text 1")
+
+
 ## Part list:
 * PVC Tubing
 * [DN40 Electric Motorized PVC Water Valve](https://www.aliexpress.com/item/misol-motorized-pvc-valve-12V-DN40-BSP-1-5-PVC-valve-2-way-electrical-pvc-valve/32808969861.html?spm=a2g0s.9042311.0.0.27424c4d3bYL2D)
@@ -42,16 +46,7 @@ This is the source code repository for showerloop NG, an updated version of [sho
 * [Water Pump](https://www.aliexpress.com/item/Jebao-Jecod-DCP3000-DCP4000-Powerful-Water-Pump-Sine-Wave-Super-Quiet-Return-Pump-W-Controller-Frequency/32827538343.html?spm=a2g0s.9042311.0.0.157c4c4d98rarg)
 * [ESP32 Wemos Lolin](https://www.aliexpress.com/item/4-MB-Flash-WEMOS-Lolin32-V1-0-0-WIFI-Bluetooth-Card-Based-ESP-32-ESP-WROOM/32852023085.html?spm=2114.search0104.3.15.4e04da6fSytFrt&ws_ab_test=searchweb0_0,searchweb201602_1_10152_10151_10065_10068_10344_10342_10343_10340_10341_10696_10084_10083_10618_10304_10307_10820_10821_10302_10843_10059_100031_10103_10624_10623_10622_10621_10620,searchweb201603_51,ppcSwitch_2&algo_expid=09912ab8-6aa3-4d3b-8b8f-b376802a110b-2&algo_pvid=09912ab8-6aa3-4d3b-8b8f-b376802a110b&transAbTest=ae803_2&priceBeautifyAB=0)
 * Relay boards
+* ...
 
 ## Build instructions
-will follow... first a PCB design is needed
-
-
-    
-
-
-For download
-=> https://api.github.com/repos/rdehuyss/showerloop/releases/latest
-=> get tag
-
-https://api.github.com/repos/rdehuyss/showerloop/contents/current?ref=refs/tags/v0.1
+will follow... first, I want to create a decent PCB design 
