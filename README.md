@@ -2,7 +2,7 @@
 
 This is the source code repository for showerloop NG, an updated version of [showerloop](https://showerloop.org) which is girlfriend/wife approved.
 
-> The idea is simple: collect, clean and reuse the hot water from your shower that normally flows down the drain.   
+> The idea is simple and comes from the original showerloop project: collect, clean and reuse the hot water from your shower that normally flows down the drain.   
 
 ## Updates
 * 01/08/2018: PoC working! Updated documentation
