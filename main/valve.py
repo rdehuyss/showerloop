@@ -6,7 +6,7 @@ from .relay import Relay
 class Valve:
     Counter = 0
 
-    def __init__(self, open_pin, close_pin, default_state, time_to_open=4000):
+    def __init__(self, open_pin, close_pin, default_state, time_to_open=3300):
         Valve.Counter = Valve.Counter + 1
         self.open_relay = Relay(open_pin)
         self.close_relay = Relay(close_pin)
