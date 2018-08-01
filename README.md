@@ -4,7 +4,7 @@ This is the source code repository for showerloop NG, an updated version of [sho
 
 > The idea is simple: collect, clean and reuse the hot water from your shower that normally flows down the drain.   
 
-##How does it work?
+## How does it work?
 1. Using water flow sensors on both the cold and hot water supply, we see whether somebody is showering
 2. If water flow is detected, we wait until the hot water is warm enough using a temperature sensor
 3. If the hot water supply is hot enough, we close the drain valve
@@ -22,16 +22,16 @@ This is the source code repository for showerloop NG, an updated version of [sho
    5. the cold water valve opens
 7. And everything is ready for your next shower!
 
-##Warning
+## Warning
 * This is a work in progress, there will probably still be some bugs in the software
 * You are combining 220V with water. If you're not experienced in electricity and plumbing, please stop now
 * The hardware items may not be final
 * I do not take any responsibility whatsoever when you try to build this yourself 
 
-##Video showing the shower prototype
+## Video showing the shower prototype
 [Here is a video showing a working prototype of showerloop](https://lh3.googleusercontent.com/RiQwsrnvpodZIGrsXgYXlvrhQmIinLnbh-OmgbJ6Kly4MkZ-bXnuI9YJNUxAbHXJ9iAuCArBEZaFzNuW3NdeOmrP6EqaUUFchiInSAtR1N4IVFcJKaVCW6QOi1JR51bOhtPEBZcEYgI)
 
-##Some photos
+## Some photos
 ![showerloop](https://lh3.googleusercontent.com/mCpf1CWx0O3JYL5fCNP8VG_fqOPlzdEwxGoAnU9qe89ydDBDHQU880Zj3NKRJVqFh9m7ZACjnhmMf5BI5zehphfSUeETSV8WXOC5-VWgqkNqywUXN2e-1g3DBTFK6yG80X30ymrv8Jc=w2400 "Logo Title Text 1")
 
 
