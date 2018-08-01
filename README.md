@@ -4,6 +4,13 @@ This is the source code repository for showerloop NG, an updated version of [sho
 
 > The idea is simple: collect, clean and reuse the hot water from your shower that normally flows down the drain.   
 
+## Updates
+* 01/08/2018: PoC working! Updated documentation
+* 19/07/2018: First release of software with MQTT and OTA update support
+* 16/07/2018: first release on github  
+* 08/05/2018: Finished major hardware
+
+
 ## How does it work?
 1. Using water flow sensors on both the cold and hot water supply, we see whether somebody is showering
 2. If water flow is detected, we wait until the hot water is warm enough using a temperature sensor
@@ -20,7 +27,8 @@ This is the source code repository for showerloop NG, an updated version of [sho
    3. the drain valve opens
    4. the recuperation water valve closes
    5. the cold water valve opens
-7. And everything is ready for your next shower!
+7. It publish stats (water consumption, water reuse, ...) about your shower to an MQTT broker of your choice
+8. And everything is ready for your next shower!
 
 ## Warning
 * This is a work in progress, there will probably still be some bugs in the software
