@@ -29,7 +29,7 @@ This is the source code repository for showerloop NG, an updated version of [sho
 * I do not take any responsibility whatsoever when you try to build this yourself 
 
 ## Video showing the shower prototype
-[Here is a video showing a working prototype of showerloop](https://lh3.googleusercontent.com/RiQwsrnvpodZIGrsXgYXlvrhQmIinLnbh-OmgbJ6Kly4MkZ-bXnuI9YJNUxAbHXJ9iAuCArBEZaFzNuW3NdeOmrP6EqaUUFchiInSAtR1N4IVFcJKaVCW6QOi1JR51bOhtPEBZcEYgI)
+[Here is a video showing a working prototype of showerloop](https://photos.app.goo.gl/sA3wuUhjRRaDtwdH7)
 
 ## Some photos
 ![showerloop](https://lh3.googleusercontent.com/mCpf1CWx0O3JYL5fCNP8VG_fqOPlzdEwxGoAnU9qe89ydDBDHQU880Zj3NKRJVqFh9m7ZACjnhmMf5BI5zehphfSUeETSV8WXOC5-VWgqkNqywUXN2e-1g3DBTFK6yG80X30ymrv8Jc=w2400 "Logo Title Text 1")
