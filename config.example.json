@@ -9,34 +9,34 @@
     "topic": "rdehuyss/test"
   },
   "hotWaterFlowSensor": {
-    "flowPin": 13,
-    "temperatureSensorPin": 36
+    "flowPin": 18,
+    "temperatureSensorPin": 35
   },
   "coldWaterFlowSensor": {
-    "flowPin": 12,
-    "temperatureSensorPin": 39
-  },
-  "drainValve": {
-    "openPin": 27,
-    "closePin": 14
-  },
-  "coldWaterSupplyValve": {
-    "openPin": 25,
-    "closePin": 26
-  },
-  "recuperationWaterSupplyValve": {
-    "openPin": 21,
-    "closePin": 22
+    "flowPin": 23,
+    "temperatureSensorPin": 34
   },
   "waterLevelSensor": {
     "lowPin": 16,
     "highPin": 17
   },
+  "drainValve": {
+    "openPin": 33,
+    "closePin": 32
+  },
+  "coldWaterSupplyValve": {
+    "openPin": 12,
+    "closePin": 13
+  },
+  "recuperationWaterSupplyValve": {
+    "openPin": 27,
+    "closePin": 14
+  },
   "waterPump": {
-    "pin": 15
+    "pin": 25
   },
   "uvcLamp": {
-    "pin": 2
+    "pin": 26
   },
   "byPassButton": {
     "pin": 18

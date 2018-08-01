@@ -12,9 +12,10 @@ def download_and_install_update_if_available(config_data):
 
 
 def start(config_data):
+    global s
     utime.sleep_ms(10000)
     from main.showerloop import ShowerLoop
-    ShowerLoop(config_data)
+    s = ShowerLoop(config_data)
 
 
 def boot_showerloop():
@@ -25,4 +26,5 @@ def boot_showerloop():
     start(config_data)
 
 
+s = None
 boot_showerloop()

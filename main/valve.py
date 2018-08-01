@@ -6,11 +6,11 @@ from .relay import Relay
 class Valve:
     Counter = 0
 
-    def __init__(self, open_pin, close_pin, default_state, time_to_open=5000):
+    def __init__(self, open_pin, close_pin, default_state, time_to_open=4000):
         Valve.Counter = Valve.Counter + 1
         self.open_relay = Relay(open_pin)
         self.close_relay = Relay(close_pin)
-        self.timer = machine.Timer(Valve.Counter)
+        self.timer = machine.Timer(Valve.Counter + 100)
         self.valve_counter = Valve.Counter
 
         self.time_to_open = time_to_open
@@ -20,16 +20,21 @@ class Valve:
 
         print("Initialized Valve ", self.valve_counter, " on pins ", open_pin, " (open) and ", close_pin, " (close)")
 
-    def open(self, callback = None):
-        self.move(1.0, callback)
+    def open(self, callback=None, force=False):
+        self.move(1.0, callback, force)
 
-    def close(self, callback = None):
-        self.move(0.0, callback)
+    def close(self, callback=None, force=False):
+        self.move(0.0, callback, force)
 
-    def move(self, new_state, callback = None):
+    def move(self, new_state, callback=None, force=False):
         if self._currentRelay is not None:
-            raise Exception("ERROR: can't control valve if already moving")  # is this the case? Otherwise stop all control and timers and then do magic?
+            raise Exception("Valve", self.valve_counter, " ERROR: can't control valve if already moving")  # is this the case? Otherwise stop all control and timers and then do magic?
         self._callback = callback
+        self.open_relay.off()
+        self.close_relay.off()
+
+        if force:
+            self.state = 1.0 - self.state
 
         action = ""
         if new_state > self.state:
@@ -41,8 +46,8 @@ class Valve:
 
         if self._currentRelay is not None:
             time_needed = self._calculate_time_needed(new_state)
-            self._currentRelay.on()
             self.timer.init(period=time_needed, mode=machine.Timer.ONE_SHOT, callback=self.move_cb)
+            self._currentRelay.on()
             print("Valve ", self.valve_counter, action, "(", self._currentRelay, "), moving from ", self.state, " to ", new_state, "(time needed = ", time_needed, ")")
             self.state = new_state
 
@@ -61,7 +66,7 @@ class Valve:
 
         move_time = math.fabs((new_state - self.state) * time_to_open_without_start_stop_time)
         if new_state == 0.0 or self.state == 0.0:
-            move_time += start_stop_time/2
+            move_time += start_stop_time / 2
         if new_state == 1.0 or self.state == 1.0:
             move_time += start_stop_time / 2
 

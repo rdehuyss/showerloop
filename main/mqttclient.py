@@ -33,8 +33,10 @@ class MQTTPublisher:
             self.connected = False
 
     def publish(self, msg):
-        if self.connected and utime.ticks_ms() - self.old_time > 60000:
-            self.client.publish(self.config_data['mqtt']['topic'], ujson.dumps(msg.__dict__))
+        if utime.ticks_ms() - self.old_time > 10000:
+            if self.connected:
+                self.client.publish(self.config_data['mqtt']['topic'], ujson.dumps(msg.__dict__))
+            else:
+                print(str(msg))
             self.old_time = utime.ticks_ms()
-
 
