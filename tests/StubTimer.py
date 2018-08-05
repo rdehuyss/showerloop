@@ -1,6 +1,4 @@
-from unittest import TestCase
 from threading import Timer
-import time
 
 
 class StubTimer:
@@ -14,8 +12,8 @@ class StubTimer:
 
     def init(self, period, mode, callback):
         self.callback = callback
-        sleep_time = period / (self.times_faster * 1000)
-        self.t = Timer(sleep_time, self._callback_wrapper)
+        self.sleep_time = period / (self.times_faster * 1000)
+        self.t = Timer(self.sleep_time, self._callback_wrapper)
         self.t.start()
         StubTimer.timers.append(self.t)
 
@@ -27,6 +25,9 @@ class StubTimer:
 
     def deinit(self):
         self.t.cancel()
+
+    def time_in_millis(self):
+        return self.sleep_time * self.times_faster * 1000
 
     @classmethod
     def wait_for_timers(cls):

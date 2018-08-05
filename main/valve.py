@@ -1,5 +1,6 @@
 import machine
 import math
+import utime
 from .relay import Relay
 
 
@@ -17,6 +18,7 @@ class Valve:
         self.state = default_state
         self._currentRelay = None
         self._callback = None
+        self._current_ticks_ms = -1
 
         print("Initialized Valve ", self.valve_counter, " on pins ", open_pin, " (open) and ", close_pin, " (close)")
 
@@ -48,6 +50,7 @@ class Valve:
             time_needed = self._calculate_time_needed(new_state)
             self.timer.init(period=time_needed, mode=machine.Timer.ONE_SHOT, callback=self.move_cb)
             self._currentRelay.on()
+            self._current_ticks_ms = utime.ticks_ms()
             print("Valve ", self.valve_counter, action, "(", self._currentRelay, "), moving from ", self.state, " to ", new_state, "(time needed = ", time_needed, ")")
             self.state = new_state
 
@@ -70,5 +73,5 @@ class Valve:
         if new_state == 1.0 or self.state == 1.0:
             move_time += start_stop_time / 2
 
-        move_time = math.trunc(move_time)
+        move_time = round(move_time)
         return move_time;
