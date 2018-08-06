@@ -5,6 +5,7 @@ This is the source code repository for showerloop NG, an updated version of [sho
 > The idea is simple and comes from the original showerloop project: collect, clean and reuse the hot water from your shower that normally flows down the drain.   
 
 ## Updates
+* 06/08/2018: Documentation update - savings added
 * 01/08/2018: PoC working! Updated documentation
 * 19/07/2018: First release of software with MQTT and OTA update support
 * 16/07/2018: first release on github  
@@ -29,6 +30,27 @@ This is the source code repository for showerloop NG, an updated version of [sho
    5. the cold water valve opens
 7. It publish stats (water consumption, water reuse, ...) about your shower to an MQTT broker of your choice
 8. And everything is ready for your next shower!
+
+## Will this save me some bucks?
+So, now is a good time to see whether this project will save me/you some money. 
+Apparently the average person takes a showser of 8.2 mins and I wanted to calculate how much water/energy is taken by a normal shower to vaidate the idea. I took some pictures of my water and gas meter before and after a shower which I timed on 8.2 minutes.
+
+|Normal shower|
+|      |Usage     |Average price (2018) | Price / shower |
+|Water |54 l      |0.0043 €/l           | 0.2322 €       |
+|Gas   |0.1258 m3 |0.65 €/m3            | 0.0818 €       | 
+|Total |          |                     | 0.3134 €       |
+
+So, we pay 0.3134 € per shower for 1 person. If we say a family exists out of 4 persons and that each family member on average showers every 2 days, this results in:
+`4*(365/2)*0.3134=228.78 €/year`
+
+Next step: measure savings with showerloop.
+
+Sources: 
+* [Average water price](https://www.vmm.be/waterloket/de-waterfactuur/de-prijs-van-water) 
+* [Average gas price](https://goedkopeenergieengas.nl/energie/gas/)
+* Normal shower water usage: [before shower](https://photos.app.goo.gl/7J7RaiDVNkRwsrLy5) and [after shower](https://photos.app.goo.gl/duH8UpFfK6touRf69)
+* Normal shower gas usage: [before shower](https://photos.app.goo.gl/H1nAGogz2sn2wBiMA) and [after shower](https://photos.app.goo.gl/fuQXuWekcQegEgLA7)
 
 ## Warning
 * This is a work in progress, there will probably still be some bugs in the software
