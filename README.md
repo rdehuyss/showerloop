@@ -35,8 +35,9 @@ This is the source code repository for showerloop NG, an updated version of [sho
 So, now is a good time to see whether this project will save me/you some money. 
 Apparently the average person takes a showser of 8.2 mins and I wanted to calculate how much water/energy is taken by a normal shower to vaidate the idea. I took some pictures of my water and gas meter before and after a shower which I timed on 8.2 minutes.
 
-|Normal shower|
+### Normal shower
 |      |Usage     |Average price (2018) | Price / shower |
+|------|----------|-------------------- | -------------- |
 |Water |54 l      |0.0043 €/l           | 0.2322 €       |
 |Gas   |0.1258 m3 |0.65 €/m3            | 0.0818 €       | 
 |Total |          |                     | 0.3134 €       |
